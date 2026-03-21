@@ -115,7 +115,7 @@ export const SidePanel: React.FC = () => {
             </svg>
           </div>
           <div className="flex-1">
-            <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>LinkedIn Post Optimizer</h1>
+            <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>EngageBoost AI</h1>
             <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Full AI workspace for viral posts</p>
           </div>
           <ThemeToggle />
