@@ -30,7 +30,7 @@ export const ScoreRing: React.FC<ScoreRingProps> = ({ score, size = 120, strokeW
             cy={center}
             r={radius}
             fill="none"
-            stroke="#e5e7eb"
+            stroke="var(--score-ring-bg)"
             strokeWidth={strokeWidth}
           />
           <circle
@@ -48,7 +48,7 @@ export const ScoreRing: React.FC<ScoreRingProps> = ({ score, size = 120, strokeW
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-2xl font-bold" style={{ color }}>{score}</span>
-          {label && <span className="text-[10px] text-gray-500 uppercase tracking-wide">{label}</span>}
+          {label && <span className="text-[10px] uppercase tracking-wide" style={{ color: 'var(--text-tertiary)' }}>{label}</span>}
         </div>
       </div>
     </div>
@@ -69,14 +69,14 @@ export const MiniScoreBar: React.FC<MiniScoreBarProps> = ({ label, score }) => {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-gray-600 w-24 truncate">{label}</span>
-      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+      <span className="text-xs w-24 truncate" style={{ color: 'var(--text-secondary)' }}>{label}</span>
+      <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--score-ring-bg)' }}>
         <div
           className={`h-full rounded-full transition-all duration-1000 ${getColor(score)}`}
           style={{ width: `${score}%` }}
         />
       </div>
-      <span className="text-xs font-semibold text-gray-700 w-8 text-right">{score}</span>
+      <span className="text-xs font-semibold w-8 text-right" style={{ color: 'var(--text-secondary)' }}>{score}</span>
     </div>
   );
 };

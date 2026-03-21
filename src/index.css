@@ -2,24 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* ===== THEME CSS VARIABLES ===== */
+:root,
+html.light {
   --linkedin-blue: #0a66c2;
   --linkedin-light: #70b5f9;
   --linkedin-dark: #004182;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-gradient-from: #ffffff;
+  --bg-gradient-to: rgba(239, 246, 255, 0.3);
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --bg-hover: #f1f5f9;
+  --bg-tab: #f3f4f6;
+  --bg-tab-active: #ffffff;
+
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-accent: #0a66c2;
+
+  --border-primary: #e5e7eb;
+  --border-secondary: #f3f4f6;
+  --border-accent: rgba(10, 102, 194, 0.3);
+
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+
+  --score-ring-bg: #e5e7eb;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-hover: #94a3b8;
+
+  --toast-bg: rgba(255, 255, 255, 0.82);
+  --toast-border: rgba(255, 255, 255, 0.45);
+  --toast-text: #1e293b;
+  --toast-shadow: rgba(0, 0, 0, 0.08);
+
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-600: #dc2626;
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-700: #15803d;
+  --green-800: #166534;
+  --blue-50: rgba(239, 246, 255, 0.8);
+  --blue-100: #dbeafe;
+  --blue-800: #1e40af;
+  --amber-100: #fef3c7;
+  --amber-600: #d97706;
 }
 
+html.dark {
+  --linkedin-blue: #4d9ee0;
+  --linkedin-light: #70b5f9;
+  --linkedin-dark: #3b82f6;
+
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-gradient-from: #0f172a;
+  --bg-gradient-to: rgba(30, 41, 59, 0.5);
+  --bg-card: #1e293b;
+  --bg-input: #1e293b;
+  --bg-hover: #334155;
+  --bg-tab: #1e293b;
+  --bg-tab-active: #334155;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-accent: #4d9ee0;
+
+  --border-primary: #334155;
+  --border-secondary: #1e293b;
+  --border-accent: rgba(77, 158, 224, 0.3);
+
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  --score-ring-bg: #334155;
+  --scrollbar-thumb: #475569;
+  --scrollbar-hover: #64748b;
+
+  --toast-bg: rgba(30, 41, 59, 0.85);
+  --toast-border: rgba(255, 255, 255, 0.1);
+  --toast-text: #e2e8f0;
+  --toast-shadow: rgba(0, 0, 0, 0.3);
+
+  --red-50: rgba(127, 29, 29, 0.3);
+  --red-100: rgba(127, 29, 29, 0.4);
+  --red-200: rgba(153, 27, 27, 0.4);
+  --red-600: #f87171;
+  --green-50: rgba(20, 83, 45, 0.3);
+  --green-100: rgba(20, 83, 45, 0.4);
+  --green-200: rgba(22, 101, 52, 0.4);
+  --green-700: #4ade80;
+  --green-800: #86efac;
+  --blue-50: rgba(30, 58, 138, 0.3);
+  --blue-100: rgba(30, 58, 138, 0.4);
+  --blue-800: #93c5fd;
+  --amber-100: rgba(120, 53, 15, 0.4);
+  --amber-600: #fbbf24;
+}
+
+/* ===== BASE STYLES ===== */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Glassmorphism utility */
+/* ===== GLASSMORPHISM ===== */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--glass-border);
 }
 
 .glass-dark {
@@ -29,15 +133,15 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Score ring animation */
+/* ===== SCORE RING ===== */
 .score-ring-bg {
-  stroke: #e5e7eb;
+  stroke: var(--score-ring-bg);
 }
 .score-ring-fill {
   transition: stroke-dashoffset 1s ease-out;
 }
 
-/* Scrollbar */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -45,16 +149,253 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--scrollbar-hover);
 }
 
-/* Shimmer loading effect */
+/* ===== SHIMMER ===== */
 .shimmer-bg {
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-hover) 50%, var(--bg-secondary) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===== THEME TOGGLE ===== */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-tab);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+.theme-toggle-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+}
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+}
+.theme-toggle-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== TOAST SYSTEM ===== */
+.toast-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  z-index: 99999;
+  pointer-events: none;
+}
+
+.toast-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 10px 12px;
+  min-width: 220px;
+  max-width: 320px;
+  background: var(--toast-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--toast-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px var(--toast-shadow), 0 2px 8px var(--toast-shadow);
+  color: var(--toast-text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.toast-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.toast-icon {
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.toast-message {
+  flex: 1;
+  line-height: 1.3;
+}
+
+/* Slide-up enter */
+.toast-enter {
+  animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Slide-down + fade exit */
+.toast-exit {
+  animation: toastSlideDown 0.3s ease-in forwards;
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastSlideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+/* ===== THEMED OVERRIDES FOR TAILWIND CLASSES ===== */
+/* These let existing Tailwind classes adapt to theme via CSS vars */
+
+html.dark .bg-gradient-to-br {
+  --tw-gradient-from: var(--bg-gradient-from);
+  --tw-gradient-to: var(--bg-gradient-to);
+}
+
+html.dark .bg-white,
+html.dark .bg-gray-100 {
+  background-color: var(--bg-card) !important;
+}
+
+html.dark .border-gray-100,
+html.dark .border-gray-200 {
+  border-color: var(--border-primary) !important;
+}
+
+html.dark .text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+html.dark .text-gray-700 {
+  color: var(--text-secondary) !important;
+}
+
+html.dark .text-gray-600 {
+  color: var(--text-secondary) !important;
+}
+
+html.dark .text-gray-500 {
+  color: var(--text-tertiary) !important;
+}
+
+html.dark .text-gray-400 {
+  color: var(--text-tertiary) !important;
+}
+
+html.dark .text-gray-800 {
+  color: var(--text-primary) !important;
+}
+
+html.dark textarea,
+html.dark input {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark textarea::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+html.dark .bg-red-50 {
+  background-color: var(--red-50) !important;
+}
+html.dark .border-red-200 {
+  border-color: var(--red-200) !important;
+}
+html.dark .text-red-600 {
+  color: var(--red-600) !important;
+}
+
+html.dark .bg-green-50,
+html.dark .bg-green-50\/50 {
+  background-color: var(--green-50) !important;
+}
+html.dark .border-green-200,
+html.dark .border-green-100 {
+  border-color: var(--green-200) !important;
+}
+html.dark .text-green-700 {
+  color: var(--green-700) !important;
+}
+html.dark .text-green-800 {
+  color: var(--green-800) !important;
+}
+
+html.dark .bg-blue-50,
+html.dark .bg-blue-50\/80 {
+  background-color: var(--blue-50) !important;
+}
+html.dark .border-blue-100 {
+  border-color: var(--blue-100) !important;
+}
+html.dark .text-blue-800 {
+  color: var(--blue-800) !important;
+}
+
+html.dark .bg-amber-100 {
+  background-color: var(--amber-100) !important;
+}
+html.dark .text-amber-600 {
+  color: var(--amber-600) !important;
+}
+
+html.dark .bg-red-50\/50 {
+  background-color: var(--red-50) !important;
+}
+html.dark .border-red-100 {
+  border-color: var(--red-100) !important;
+}
+
+html.dark .text-linkedin-blue {
+  color: var(--text-accent) !important;
+}
+
+html.dark .hover\:bg-blue-50:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+html.dark .hover\:bg-gray-200:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+html.dark .shadow-sm {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }

@@ -4,6 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkedIn Post Optimizer</title>
+  <script>
+    // FOUC prevention: apply saved theme before first paint
+    (function() {
+      try {
+        var stored = localStorage.getItem('__theme_cache');
+        if (!stored) stored = 'light';
+        document.documentElement.classList.add(stored);
+        document.documentElement.setAttribute('data-theme', stored);
+      } catch(e) {
+        document.documentElement.classList.add('light');
+      }
+    })();
+  </script>
+  <style>
+    /* Hide until React hydrates to prevent FOUC */
+    html:not(.light):not(.dark) body { visibility: hidden; }
+  </style>
 </head>
 <body>
   <div id="root"></div>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ScoreRing, MiniScoreBar } from '../components/ScoreRing';
 import { PostInput } from '../components/PostInput';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ThemeToggle } from '../ui/ThemeToggle';
+import { useToast } from '../ui/Toast';
 
 type ScoreResult = {
   overall: number;
@@ -14,6 +16,7 @@ export const Popup: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [error, setError] = useState('');
+  const { toast } = useToast();
 
   const handleScore = async () => {
     if (!post.trim()) return;
@@ -25,8 +28,11 @@ export const Popup: React.FC = () => {
       const response = await chrome.runtime.sendMessage({ type: 'SCORE_POST', post: post.trim() });
       if (response.error) throw new Error(response.error);
       setResult(response.data);
+      toast('Score analysis complete!', 'success');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to score post');
+      const msg = err instanceof Error ? err.message : 'Failed to score post';
+      setError(msg);
+      toast(msg, 'error');
     } finally {
       setLoading(false);
     }
@@ -37,7 +43,8 @@ export const Popup: React.FC = () => {
   };
 
   return (
-    <div className="w-[380px] min-h-[420px] bg-gradient-to-br from-white to-blue-50/50 p-4 flex flex-col">
+    <div className="w-[380px] min-h-[420px] p-4 flex flex-col"
+      style={{ background: `linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to))` }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -47,17 +54,20 @@ export const Popup: React.FC = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-sm font-bold text-gray-900">Post Optimizer</h1>
-            <p className="text-[10px] text-gray-500">AI-powered engagement scoring</p>
+            <h1 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Post Optimizer</h1>
+            <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>AI-powered engagement scoring</p>
           </div>
         </div>
-        <button
-          onClick={openSidePanel}
-          className="text-xs text-linkedin-blue hover:text-linkedin-dark font-medium
-            px-2.5 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
-        >
-          Full Workspace &rarr;
-        </button>
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
+          <button
+            onClick={openSidePanel}
+            className="text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors"
+            style={{ color: 'var(--text-accent)' }}
+          >
+            Full Workspace &rarr;
+          </button>
+        </div>
       </div>
 
       {/* Post Input */}
@@ -76,7 +86,8 @@ export const Popup: React.FC = () => {
 
       {/* Error */}
       {error && (
-        <div className="mt-3 p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 animate-fade-in">
+        <div className="mt-3 p-2.5 rounded-xl text-xs animate-fade-in"
+          style={{ background: 'var(--red-50)', border: `1px solid var(--red-200)`, color: 'var(--red-600)' }}>
           {error}
         </div>
       )}
@@ -97,8 +108,8 @@ export const Popup: React.FC = () => {
               <MiniScoreBar label="Formatting" score={result.dimensions.formatting} />
             </div>
           </div>
-          <div className="mt-3 p-2.5 bg-blue-50/80 rounded-xl border border-blue-100">
-            <p className="text-xs text-gray-700 leading-relaxed">{result.feedback}</p>
+          <div className="mt-3 p-2.5 rounded-xl" style={{ background: 'var(--blue-50)', border: `1px solid var(--blue-100)` }}>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{result.feedback}</p>
           </div>
         </div>
       )}

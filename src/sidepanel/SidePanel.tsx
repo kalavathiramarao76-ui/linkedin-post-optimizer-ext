@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ScoreRing, MiniScoreBar } from '../components/ScoreRing';
 import { PostInput } from '../components/PostInput';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ThemeToggle } from '../ui/ThemeToggle';
+import { useToast } from '../ui/Toast';
 
 type Tab = 'optimizer' | 'scorer' | 'variants' | 'hooks' | 'viral';
 
@@ -37,6 +39,7 @@ export const SidePanel: React.FC = () => {
   const [post, setPost] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { toast } = useToast();
 
   // Results
   const [scoreResult, setScoreResult] = useState<ScoreResult | null>(null);
@@ -68,22 +71,29 @@ export const SidePanel: React.FC = () => {
       switch (type) {
         case 'SCORE_POST':
           setScoreResult(response.data);
+          toast('Score analysis complete!', 'success');
           break;
         case 'OPTIMIZE_POST':
           setOptimizeResult(response.data);
+          toast('Post optimized successfully!', 'success');
           break;
         case 'GENERATE_VARIANTS':
           setVariants(response.data.variants);
+          toast('A/B variants generated!', 'success');
           break;
         case 'REWRITE_HOOKS':
           setHooks(response.data.hooks);
+          toast('Hook rewrites ready!', 'success');
           break;
         case 'PREDICT_VIRAL':
           setViralResult(response.data);
+          toast('Viral prediction complete!', 'success');
           break;
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      const msg = err instanceof Error ? err.message : 'Something went wrong';
+      setError(msg);
+      toast(msg, 'error');
     } finally {
       setLoading(false);
     }
@@ -91,35 +101,38 @@ export const SidePanel: React.FC = () => {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
+    toast('Copied to clipboard!', 'info');
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-white to-blue-50/30">
+    <div className="h-screen flex flex-col" style={{ background: `linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to))` }}>
       {/* Header */}
-      <div className="px-4 pt-4 pb-3 border-b border-gray-100">
+      <div className="px-4 pt-4 pb-3" style={{ borderBottom: `1px solid var(--border-secondary)` }}>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-8 h-8 rounded-lg bg-linkedin-blue flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
               <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
             </svg>
           </div>
-          <div>
-            <h1 className="text-base font-bold text-gray-900">LinkedIn Post Optimizer</h1>
-            <p className="text-[10px] text-gray-500">Full AI workspace for viral posts</p>
+          <div className="flex-1">
+            <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>LinkedIn Post Optimizer</h1>
+            <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Full AI workspace for viral posts</p>
           </div>
+          <ThemeToggle />
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-0.5 bg-gray-100 rounded-xl p-0.5">
+        <div className="flex gap-0.5 rounded-xl p-0.5" style={{ background: 'var(--bg-tab)' }}>
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-1.5 text-[11px] font-medium rounded-lg transition-all
-                ${activeTab === tab.id
-                  ? 'bg-white text-linkedin-blue shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
-                }`}
+              className={`flex-1 py-1.5 text-[11px] font-medium rounded-lg transition-all`}
+              style={{
+                background: activeTab === tab.id ? 'var(--bg-tab-active)' : 'transparent',
+                color: activeTab === tab.id ? 'var(--text-accent)' : 'var(--text-tertiary)',
+                boxShadow: activeTab === tab.id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
               dangerouslySetInnerHTML={{ __html: `${tab.icon} ${tab.label}` }}
             />
           ))}
@@ -132,7 +145,8 @@ export const SidePanel: React.FC = () => {
         <PostInput value={post} onChange={setPost} rows={6} />
 
         {error && (
-          <div className="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 animate-fade-in">
+          <div className="p-2.5 rounded-xl text-xs animate-fade-in"
+            style={{ background: 'var(--red-50)', border: `1px solid var(--red-200)`, color: 'var(--red-600)' }}>
             {error}
           </div>
         )}
@@ -216,7 +230,8 @@ const CopyButton: React.FC<{ text: string; onCopy: (t: string) => void }> = ({ t
   return (
     <button
       onClick={handleCopy}
-      className="text-[10px] px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+      className="text-[10px] px-2 py-1 rounded-md transition-colors"
+      style={{ background: 'var(--bg-tab)', color: 'var(--text-secondary)' }}
     >
       {copied ? 'Copied!' : 'Copy'}
     </button>
@@ -241,33 +256,31 @@ const OptimizerTab: React.FC<{
     {loading && <LoadingSpinner text="Optimizing your post..." />}
     {result && !loading && (
       <div className="space-y-3 animate-slide-up">
-        {/* Changes summary */}
-        <div className="p-3 bg-green-50 border border-green-200 rounded-xl">
-          <h3 className="text-xs font-semibold text-green-800 mb-1.5">Changes Made:</h3>
+        <div className="p-3 rounded-xl" style={{ background: 'var(--green-50)', border: `1px solid var(--green-200)` }}>
+          <h3 className="text-xs font-semibold mb-1.5" style={{ color: 'var(--green-800)' }}>Changes Made:</h3>
           <ul className="space-y-1">
             {result.changes.map((change, i) => (
-              <li key={i} className="text-xs text-green-700 flex items-start gap-1.5">
-                <span className="text-green-500 mt-0.5">&#10003;</span>
+              <li key={i} className="text-xs flex items-start gap-1.5" style={{ color: 'var(--green-700)' }}>
+                <span className="mt-0.5" style={{ color: 'var(--green-700)' }}>&#10003;</span>
                 {change}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Before / After */}
         <div className="grid grid-cols-2 gap-2">
-          <div className="p-2.5 bg-red-50/50 rounded-xl border border-red-100">
+          <div className="p-2.5 rounded-xl" style={{ background: 'var(--red-50)', border: `1px solid var(--red-100)` }}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] font-semibold text-red-600 uppercase">Before</span>
+              <span className="text-[10px] font-semibold uppercase" style={{ color: 'var(--red-600)' }}>Before</span>
             </div>
-            <p className="text-[11px] text-gray-700 leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto">{post}</p>
+            <p className="text-[11px] leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto" style={{ color: 'var(--text-secondary)' }}>{post}</p>
           </div>
-          <div className="p-2.5 bg-green-50/50 rounded-xl border border-green-100">
+          <div className="p-2.5 rounded-xl" style={{ background: 'var(--green-50)', border: `1px solid var(--green-100)` }}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] font-semibold text-green-600 uppercase">After</span>
+              <span className="text-[10px] font-semibold uppercase" style={{ color: 'var(--green-700)' }}>After</span>
               <CopyButton text={result.optimized} onCopy={onCopy} />
             </div>
-            <p className="text-[11px] text-gray-700 leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto">{result.optimized}</p>
+            <p className="text-[11px] leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto" style={{ color: 'var(--text-secondary)' }}>{result.optimized}</p>
           </div>
         </div>
       </div>
@@ -295,16 +308,16 @@ const ScorerTab: React.FC<{
           <ScoreRing score={result.overall} size={130} label="Overall" />
         </div>
         <div className="glass rounded-xl p-3 space-y-2">
-          <h3 className="text-xs font-semibold text-gray-700 mb-2">Dimension Breakdown</h3>
+          <h3 className="text-xs font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>Dimension Breakdown</h3>
           <MiniScoreBar label="Hook Strength" score={result.dimensions.hook} />
           <MiniScoreBar label="Readability" score={result.dimensions.readability} />
           <MiniScoreBar label="Call to Action" score={result.dimensions.cta} />
           <MiniScoreBar label="Emotional Impact" score={result.dimensions.emotion} />
           <MiniScoreBar label="Formatting" score={result.dimensions.formatting} />
         </div>
-        <div className="p-3 bg-blue-50/80 rounded-xl border border-blue-100">
-          <h3 className="text-xs font-semibold text-blue-800 mb-1">AI Feedback</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">{result.feedback}</p>
+        <div className="p-3 rounded-xl" style={{ background: 'var(--blue-50)', border: `1px solid var(--blue-100)` }}>
+          <h3 className="text-xs font-semibold mb-1" style={{ color: 'var(--blue-800)' }}>AI Feedback</h3>
+          <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{result.feedback}</p>
         </div>
       </div>
     )}
@@ -329,18 +342,18 @@ const VariantsTab: React.FC<{
     {variants.length > 0 && !loading && (
       <div className="space-y-3 animate-slide-up">
         {variants.map((v, i) => (
-          <div key={i} className="glass rounded-xl p-3 border border-gray-200/50">
+          <div key={i} className="glass rounded-xl p-3" style={{ border: `1px solid var(--border-primary)` }}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white
                   ${i === 0 ? 'bg-blue-500' : i === 1 ? 'bg-purple-500' : 'bg-amber-500'}`}>
                   {v.version}
                 </span>
-                <span className="text-[10px] text-gray-500 italic">{v.angle}</span>
+                <span className="text-[10px] italic" style={{ color: 'var(--text-tertiary)' }}>{v.angle}</span>
               </div>
               <CopyButton text={v.post} onCopy={onCopy} />
             </div>
-            <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap">{v.post}</p>
+            <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>{v.post}</p>
           </div>
         ))}
       </div>
@@ -366,13 +379,15 @@ const HooksTab: React.FC<{
     {hooks.length > 0 && !loading && (
       <div className="space-y-2 animate-slide-up">
         {hooks.map((h, i) => (
-          <div key={i} className="flex items-start gap-2 p-2.5 bg-white rounded-xl border border-gray-200 hover:border-linkedin-blue/30 transition-colors group">
-            <span className="w-5 h-5 rounded-full bg-linkedin-blue/10 text-linkedin-blue text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+          <div key={i} className="flex items-start gap-2 p-2.5 rounded-xl transition-colors group"
+            style={{ background: 'var(--bg-card)', border: `1px solid var(--border-primary)` }}>
+            <span className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ background: 'var(--border-accent)', color: 'var(--text-accent)' }}>
               {i + 1}
             </span>
             <div className="flex-1 min-w-0">
-              <span className="text-[10px] text-gray-400 uppercase tracking-wide">{h.style}</span>
-              <p className="text-xs text-gray-800 leading-relaxed mt-0.5">{h.hook}</p>
+              <span className="text-[10px] uppercase tracking-wide" style={{ color: 'var(--text-tertiary)' }}>{h.style}</span>
+              <p className="text-xs leading-relaxed mt-0.5" style={{ color: 'var(--text-primary)' }}>{h.hook}</p>
             </div>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
               <CopyButton text={h.hook} onCopy={onCopy} />
@@ -400,7 +415,6 @@ const ViralTab: React.FC<{
     {loading && <LoadingSpinner text="Analyzing viral potential..." />}
     {result && !loading && (
       <div className="animate-slide-up space-y-4">
-        {/* Viral score display */}
         <div className="flex flex-col items-center p-6 glass rounded-2xl">
           <div className="relative w-24 h-24">
             <div className={`w-full h-full rounded-full flex items-center justify-center text-3xl font-black
@@ -409,21 +423,21 @@ const ViralTab: React.FC<{
                 'bg-red-100 text-red-600'}`}>
               {result.score}
             </div>
-            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-gray-500">/10</span>
+            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px]" style={{ color: 'var(--text-tertiary)' }}>/10</span>
           </div>
-          <p className="mt-3 text-sm text-gray-700 text-center">{result.prediction}</p>
+          <p className="mt-3 text-sm text-center" style={{ color: 'var(--text-secondary)' }}>{result.prediction}</p>
         </div>
 
-        {/* Factors */}
         <div className="space-y-2">
-          <h3 className="text-xs font-semibold text-gray-700">Key Factors</h3>
+          <h3 className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>Key Factors</h3>
           {result.factors.map((f, i) => (
-            <div key={i} className="flex items-center gap-2 p-2 bg-white rounded-lg border border-gray-100">
+            <div key={i} className="flex items-center gap-2 p-2 rounded-lg"
+              style={{ background: 'var(--bg-card)', border: `1px solid var(--border-secondary)` }}>
               <span className={`w-2 h-2 rounded-full flex-shrink-0
                 ${f.impact === 'positive' ? 'bg-green-500' :
                   f.impact === 'negative' ? 'bg-red-500' : 'bg-gray-400'}`}
               />
-              <span className="text-xs text-gray-700">{f.factor}</span>
+              <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{f.factor}</span>
               <span className={`ml-auto text-[10px] font-medium
                 ${f.impact === 'positive' ? 'text-green-600' :
                   f.impact === 'negative' ? 'text-red-600' : 'text-gray-500'}`}>
