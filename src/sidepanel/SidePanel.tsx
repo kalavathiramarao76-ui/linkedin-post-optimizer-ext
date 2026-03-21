@@ -121,7 +121,7 @@ export const SidePanel: React.FC = () => {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-1.5">
-              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>EngageBoost AI</h1>
+              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Engagix</h1>
               <FavoriteBadge />
             </div>
             <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Full AI workspace for viral posts</p>

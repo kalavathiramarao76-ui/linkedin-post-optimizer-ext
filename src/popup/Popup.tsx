@@ -59,7 +59,7 @@ export const Popup: React.FC = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>EngageBoost AI</h1>
+            <h1 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Engagix</h1>
             <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>AI-powered LinkedIn engagement scoring</p>
           </div>
         </div>

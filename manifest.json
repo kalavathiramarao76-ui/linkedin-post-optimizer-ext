@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "EngageBoost AI — LinkedIn Post Optimizer & Scorer",
-  "short_name": "EngageBoost AI",
+  "name": "Engagix \u2014 LinkedIn Post Optimizer & Engagement Scorer",
+  "short_name": "Engagix",
   "version": "1.0.0",
   "description": "AI LinkedIn post optimizer: score engagement, rewrite hooks & predict virality. Free Chrome extension for LinkedIn growth.",
   "permissions": [
@@ -33,8 +33,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.linkedin.com/*", "https://linkedin.com/*"],
-      "js": ["content.js"],
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://linkedin.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "css": [],
       "run_at": "document_idle"
     }

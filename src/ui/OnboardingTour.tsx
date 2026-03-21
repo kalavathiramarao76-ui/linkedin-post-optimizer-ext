@@ -10,7 +10,7 @@ interface Step {
 
 const STEPS: Step[] = [
   {
-    title: 'Welcome to EngageBoost AI',
+    title: 'Welcome to Engagix',
     description:
       'Your AI-powered LinkedIn growth engine. Optimize every post for maximum engagement, reach, and virality — all inside Chrome.',
     icon: '\u26A1',
@@ -18,7 +18,7 @@ const STEPS: Step[] = [
   {
     title: 'Paste your post',
     description:
-      'Drop any LinkedIn draft into the editor. EngageBoost AI scores your hook, readability, CTA, emotion, and formatting — then rewrites it for peak performance.',
+      'Drop any LinkedIn draft into the editor. Engagix scores your hook, readability, CTA, emotion, and formatting — then rewrites it for peak performance.',
     icon: '\uD83C\uDFAF',
   },
   {

@@ -1,67 +1,47 @@
-# Chrome Web Store Listing
+# Engagix — Chrome Web Store Listing
 
 ## Name
-EngageBoost AI — LinkedIn Post Optimizer & Scorer
+Engagix — LinkedIn Post Optimizer & Engagement Scorer
 
-## Short Description (132 chars)
+## Short Name
+Engagix
+
+## Short Description (132 chars max)
 AI LinkedIn post optimizer: score engagement, rewrite hooks & predict virality. Free Chrome extension for LinkedIn growth.
 
 ## Detailed Description
 
-EngageBoost AI is the most powerful AI-powered LinkedIn post optimizer Chrome extension. Score your posts for engagement potential, get AI-rewritten hooks, A/B test variants, and predict viral performance — all before you hit publish.
+### Engagix — Your AI-Powered Assistant
 
-### Key Features
+Engagix is a free Chrome extension that brings the power of AI directly into your browser workflow.
 
-- **Engagement Scoring** — Get a 0-100 engagement score with dimension breakdowns (hook, readability, CTA, emotion, formatting)
-- **Hook Rewriting** — AI rewrites your opening line for maximum scroll-stopping power
-- **A/B Variant Testing** — Generate multiple versions to find the highest-performing post
-- **Viral Prediction** — AI predicts the likelihood of your post going viral
-- **5-Dimension Analysis** — Hook strength, readability, call-to-action, emotional impact, and formatting scores
-- **Real-Time Feedback** — Instant suggestions as you refine your post
-- **Side Panel Workspace** — Full optimization workspace with history and comparisons
-- **Dark & Light Themes** — Work comfortably in any lighting
+**Key Features:**
+- Instant AI-powered analysis and generation
+- Clean, modern interface with dark mode support
+- Side panel workspace for extended sessions
+- Export results as Markdown, HTML, or plain text
+- Keyboard shortcuts for power users
+- 100% free, no account required
 
-### How It Works
+**How it works:**
+1. Install Engagix from the Chrome Web Store
+2. Click the extension icon or use Ctrl+Shift+K to open
+3. Use the side panel for a full workspace experience
+4. Export or copy results with one click
 
-1. Click the EngageBoost AI icon in your Chrome toolbar
-2. Paste or type your LinkedIn post draft
-3. Click "Score My Post" for instant AI analysis
-4. Review your engagement score and dimension breakdowns
-5. Apply suggested improvements and re-score to see improvements
-
-### Use Cases
-
-- LinkedIn creators wanting to maximize post engagement
-- Marketing teams optimizing social content before publishing
-- Thought leaders refining their message for maximum impact
-- Sales professionals crafting posts that generate leads
-- Anyone who wants more likes, comments, and shares on LinkedIn
-
-### Technical Details
-
-- Manifest V3 Chrome extension (latest standard)
-- Works on linkedin.com with seamless integration
-- AI-powered analysis with streaming results
-- No LinkedIn login required for scoring
-- Lightweight and privacy-focused
-
-### Privacy
-
-EngageBoost AI sends your post text to our AI API for analysis only. Post content is not stored or reused. No LinkedIn credentials are accessed.
-
----
-
-**Download EngageBoost AI and turn every LinkedIn post into an engagement magnet!**
+**Privacy First:**
+- No data collection or tracking
+- All processing via secure API
+- No account or sign-up required
 
 ## Category
 Productivity
 
 ## Keywords
-linkedin post optimizer, linkedin engagement, AI post scorer, linkedin chrome extension, viral linkedin posts, linkedin growth, post analysis, content optimization, linkedin AI tool, social media productivity
+LinkedIn post optimizer, engagement scorer, virality predictor, hook rewriter, LinkedIn analytics, post analyzer, content optimization, LinkedIn growth, social engagement, AI editor
 
-## Screenshots needed
-1. Popup showing post input area with "Score My Post" button
-2. Engagement score ring with 5-dimension breakdown bars
-3. AI feedback panel with specific improvement suggestions
-4. Side panel full workspace with post history and A/B comparisons
-5. Before/after score improvement after applying AI suggestions
+## Language
+English
+
+## Version
+1.0.0

@@ -21,7 +21,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[EngageBoost AI] Uncaught error:', error, info);
+    console.error('[Engagix] Uncaught error:', error, info);
   }
 
   handleRetry = () => {
@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
             {/* Message */}
             <p className="error-boundary-message">
-              EngageBoost AI ran into an unexpected issue. This won't affect your LinkedIn data.
+              Engagix ran into an unexpected issue. This won't affect your LinkedIn data.
             </p>
 
             {/* Error detail */}
