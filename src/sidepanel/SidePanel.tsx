@@ -4,6 +4,8 @@ import { PostInput } from '../components/PostInput';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { useToast } from '../ui/Toast';
+import { FavoriteButton, FavoriteBadge } from '../ui/FavoriteButton';
+import { OnboardingTour } from '../ui/OnboardingTour';
 
 type Tab = 'optimizer' | 'scorer' | 'variants' | 'hooks' | 'viral';
 
@@ -106,6 +108,7 @@ export const SidePanel: React.FC = () => {
 
   return (
     <div className="h-screen flex flex-col" style={{ background: `linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to))` }}>
+      <OnboardingTour />
       {/* Header */}
       <div className="px-4 pt-4 pb-3" style={{ borderBottom: `1px solid var(--border-secondary)` }}>
         <div className="flex items-center gap-2 mb-3">
@@ -115,7 +118,10 @@ export const SidePanel: React.FC = () => {
             </svg>
           </div>
           <div className="flex-1">
-            <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>EngageBoost AI</h1>
+            <div className="flex items-center gap-1.5">
+              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>EngageBoost AI</h1>
+              <FavoriteBadge />
+            </div>
             <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Full AI workspace for viral posts</p>
           </div>
           <ThemeToggle />
@@ -278,7 +284,10 @@ const OptimizerTab: React.FC<{
           <div className="p-2.5 rounded-xl" style={{ background: 'var(--green-50)', border: `1px solid var(--green-100)` }}>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-semibold uppercase" style={{ color: 'var(--green-700)' }}>After</span>
-              <CopyButton text={result.optimized} onCopy={onCopy} />
+              <div className="flex items-center gap-1">
+                <FavoriteButton content={result.optimized} type="optimized" label="Optimized post" />
+                <CopyButton text={result.optimized} onCopy={onCopy} />
+              </div>
             </div>
             <p className="text-[11px] leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto" style={{ color: 'var(--text-secondary)' }}>{result.optimized}</p>
           </div>
@@ -316,7 +325,10 @@ const ScorerTab: React.FC<{
           <MiniScoreBar label="Formatting" score={result.dimensions.formatting} />
         </div>
         <div className="p-3 rounded-xl" style={{ background: 'var(--blue-50)', border: `1px solid var(--blue-100)` }}>
-          <h3 className="text-xs font-semibold mb-1" style={{ color: 'var(--blue-800)' }}>AI Feedback</h3>
+          <div className="flex items-center justify-between mb-1">
+            <h3 className="text-xs font-semibold" style={{ color: 'var(--blue-800)' }}>AI Feedback</h3>
+            <FavoriteButton content={result.feedback} type="scored" label={`Score: ${result.overall}/100`} score={result.overall} />
+          </div>
           <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{result.feedback}</p>
         </div>
       </div>
@@ -351,7 +363,10 @@ const VariantsTab: React.FC<{
                 </span>
                 <span className="text-[10px] italic" style={{ color: 'var(--text-tertiary)' }}>{v.angle}</span>
               </div>
-              <CopyButton text={v.post} onCopy={onCopy} />
+              <div className="flex items-center gap-1">
+                <FavoriteButton content={v.post} type="variant" label={`Variant ${v.version}: ${v.angle}`} />
+                <CopyButton text={v.post} onCopy={onCopy} />
+              </div>
             </div>
             <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>{v.post}</p>
           </div>

@@ -4,6 +4,8 @@ import { PostInput } from '../components/PostInput';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { useToast } from '../ui/Toast';
+import { FavoriteButton } from '../ui/FavoriteButton';
+import { OnboardingTour } from '../ui/OnboardingTour';
 
 type ScoreResult = {
   overall: number;
@@ -45,6 +47,7 @@ export const Popup: React.FC = () => {
   return (
     <div className="w-[380px] min-h-[420px] p-4 flex flex-col"
       style={{ background: `linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to))` }}>
+      <OnboardingTour />
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -109,6 +112,10 @@ export const Popup: React.FC = () => {
             </div>
           </div>
           <div className="mt-3 p-2.5 rounded-xl" style={{ background: 'var(--blue-50)', border: `1px solid var(--blue-100)` }}>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-semibold" style={{ color: 'var(--blue-800)' }}>AI Feedback</span>
+              <FavoriteButton content={result.feedback} type="scored" label={`Score: ${result.overall}/100`} score={result.overall} />
+            </div>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{result.feedback}</p>
           </div>
         </div>
