@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScoreRing, MiniScoreBar } from '../components/ScoreRing';
 import { PostInput } from '../components/PostInput';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -6,6 +6,8 @@ import { ThemeToggle } from '../ui/ThemeToggle';
 import { useToast } from '../ui/Toast';
 import { FavoriteButton, FavoriteBadge } from '../ui/FavoriteButton';
 import { OnboardingTour } from '../ui/OnboardingTour';
+import { ApiErrorFallback } from '../ui/ApiErrorFallback';
+import { ExportMenu } from '../ui/ExportMenu';
 
 type Tab = 'optimizer' | 'scorer' | 'variants' | 'hooks' | 'viral';
 
@@ -150,11 +152,20 @@ export const SidePanel: React.FC = () => {
         {/* Post Input (shared) */}
         <PostInput value={post} onChange={setPost} rows={6} />
 
-        {error && (
-          <div className="p-2.5 rounded-xl text-xs animate-fade-in"
-            style={{ background: 'var(--red-50)', border: `1px solid var(--red-200)`, color: 'var(--red-600)' }}>
-            {error}
-          </div>
+        {error && !loading && (
+          <ApiErrorFallback
+            error={error}
+            onRetry={() => {
+              const typeMap: Record<Tab, string> = {
+                optimizer: 'OPTIMIZE_POST',
+                scorer: 'SCORE_POST',
+                variants: 'GENERATE_VARIANTS',
+                hooks: 'REWRITE_HOOKS',
+                viral: 'PREDICT_VIRAL',
+              };
+              sendRequest(typeMap[activeTab]);
+            }}
+          />
         )}
 
         {/* Tab Content */}
@@ -263,7 +274,14 @@ const OptimizerTab: React.FC<{
     {result && !loading && (
       <div className="space-y-3 animate-slide-up">
         <div className="p-3 rounded-xl" style={{ background: 'var(--green-50)', border: `1px solid var(--green-200)` }}>
-          <h3 className="text-xs font-semibold mb-1.5" style={{ color: 'var(--green-800)' }}>Changes Made:</h3>
+          <div className="flex items-center justify-between mb-1.5">
+            <h3 className="text-xs font-semibold" style={{ color: 'var(--green-800)' }}>Changes Made:</h3>
+            <ExportMenu data={{
+              title: 'Optimized Post',
+              content: result.optimized,
+              changes: result.changes,
+            }} />
+          </div>
           <ul className="space-y-1">
             {result.changes.map((change, i) => (
               <li key={i} className="text-xs flex items-start gap-1.5" style={{ color: 'var(--green-700)' }}>
@@ -327,7 +345,15 @@ const ScorerTab: React.FC<{
         <div className="p-3 rounded-xl" style={{ background: 'var(--blue-50)', border: `1px solid var(--blue-100)` }}>
           <div className="flex items-center justify-between mb-1">
             <h3 className="text-xs font-semibold" style={{ color: 'var(--blue-800)' }}>AI Feedback</h3>
-            <FavoriteButton content={result.feedback} type="scored" label={`Score: ${result.overall}/100`} score={result.overall} />
+            <div className="flex items-center gap-1">
+              <FavoriteButton content={result.feedback} type="scored" label={`Score: ${result.overall}/100`} score={result.overall} />
+              <ExportMenu data={{
+                title: 'Engagement Score Analysis',
+                score: result.overall,
+                dimensions: result.dimensions,
+                content: result.feedback,
+              }} />
+            </div>
           </div>
           <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{result.feedback}</p>
         </div>
@@ -353,6 +379,13 @@ const VariantsTab: React.FC<{
     {loading && <LoadingSpinner text="Creating 3 unique variants..." />}
     {variants.length > 0 && !loading && (
       <div className="space-y-3 animate-slide-up">
+        <div className="flex justify-end">
+          <ExportMenu data={{
+            title: 'A/B Test Variants',
+            content: '',
+            variants: variants,
+          }} />
+        </div>
         {variants.map((v, i) => (
           <div key={i} className="glass rounded-xl p-3" style={{ border: `1px solid var(--border-primary)` }}>
             <div className="flex items-center justify-between mb-2">

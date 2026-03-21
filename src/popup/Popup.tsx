@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ScoreRing, MiniScoreBar } from '../components/ScoreRing';
 import { PostInput } from '../components/PostInput';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -6,6 +6,8 @@ import { ThemeToggle } from '../ui/ThemeToggle';
 import { useToast } from '../ui/Toast';
 import { FavoriteButton } from '../ui/FavoriteButton';
 import { OnboardingTour } from '../ui/OnboardingTour';
+import { ApiErrorFallback } from '../ui/ApiErrorFallback';
+import { ExportMenu, type ExportData } from '../ui/ExportMenu';
 
 type ScoreResult = {
   overall: number;
@@ -20,7 +22,7 @@ export const Popup: React.FC = () => {
   const [error, setError] = useState('');
   const { toast } = useToast();
 
-  const handleScore = async () => {
+  const handleScore = useCallback(async () => {
     if (!post.trim()) return;
     setLoading(true);
     setError('');
@@ -38,7 +40,7 @@ export const Popup: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [post, toast]);
 
   const openSidePanel = () => {
     chrome.runtime.sendMessage({ type: 'OPEN_SIDEPANEL' });
@@ -87,12 +89,9 @@ export const Popup: React.FC = () => {
         {loading ? 'Analyzing...' : 'Score My Post'}
       </button>
 
-      {/* Error */}
-      {error && (
-        <div className="mt-3 p-2.5 rounded-xl text-xs animate-fade-in"
-          style={{ background: 'var(--red-50)', border: `1px solid var(--red-200)`, color: 'var(--red-600)' }}>
-          {error}
-        </div>
+      {/* Error with auto-retry */}
+      {error && !loading && (
+        <ApiErrorFallback error={error} onRetry={handleScore} />
       )}
 
       {/* Loading */}
@@ -114,7 +113,15 @@ export const Popup: React.FC = () => {
           <div className="mt-3 p-2.5 rounded-xl" style={{ background: 'var(--blue-50)', border: `1px solid var(--blue-100)` }}>
             <div className="flex items-center justify-between mb-1">
               <span className="text-[10px] font-semibold" style={{ color: 'var(--blue-800)' }}>AI Feedback</span>
-              <FavoriteButton content={result.feedback} type="scored" label={`Score: ${result.overall}/100`} score={result.overall} />
+              <div className="flex items-center gap-1">
+                <FavoriteButton content={result.feedback} type="scored" label={`Score: ${result.overall}/100`} score={result.overall} />
+                <ExportMenu data={{
+                  title: 'Engagement Score Analysis',
+                  score: result.overall,
+                  dimensions: result.dimensions,
+                  content: result.feedback,
+                }} />
+              </div>
             </div>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{result.feedback}</p>
           </div>
