@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engagix - LinkedIn Post Optimizer | Chrome Web Store</title>
+<style>
+  :root { --accent: #f97316; --accent-light: #fb923c; --accent-dark: #ea580c; --bg: #0f172a; --card: #1e293b; --card-hover: #334155; --text: #f1f5f9; --text-muted: #94a3b8; --border: #334155; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .hero { padding: 80px 0 60px; text-align: center; background: linear-gradient(180deg, rgba(249,115,22,0.15) 0%, transparent 100%); position: relative; }
+  .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(249,115,22,0.08) 0%, transparent 50%); }
+  .hero-icon { width: 96px; height: 96px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 48px; margin: 0 auto 24px; box-shadow: 0 20px 60px rgba(249,115,22,0.3); position: relative; }
+  .hero h1 { font-size: 56px; font-weight: 800; margin-bottom: 8px; background: linear-gradient(135deg, #fff, var(--accent-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .subtitle { font-size: 20px; color: var(--accent-light); font-weight: 600; margin-bottom: 16px; }
+  .hero .tagline { font-size: 18px; color: var(--text-muted); max-width: 600px; margin: 0 auto 32px; }
+  .badge-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .badge { background: var(--card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; color: var(--text-muted); }
+  .badge strong { color: var(--accent-light); }
+  .section { padding: 60px 0; }
+  .section-title { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 12px; }
+  .section-desc { text-align: center; color: var(--text-muted); margin-bottom: 48px; font-size: 16px; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .feature-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; transition: all 0.3s; }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(249,115,22,0.15); }
+  .feature-card .icon { font-size: 32px; margin-bottom: 12px; }
+  .feature-card h3 { font-size: 18px; margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--text-muted); }
+  .feature-card .tag { display: inline-block; background: rgba(249,115,22,0.15); color: var(--accent-light); padding: 2px 10px; border-radius: 100px; font-size: 12px; margin-top: 8px; }
+  .flow-steps { display: flex; gap: 0; justify-content: center; flex-wrap: wrap; padding: 20px 0; }
+  .flow-step { display: flex; align-items: center; }
+  .flow-step-content { text-align: center; padding: 20px; }
+  .flow-num { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; margin: 0 auto 12px; }
+  .flow-step-content h4 { font-size: 15px; margin-bottom: 4px; }
+  .flow-step-content p { font-size: 13px; color: var(--text-muted); max-width: 140px; margin: 0 auto; }
+  .flow-arrow { color: var(--accent); font-size: 24px; padding: 0 4px; margin-top: -30px; }
+  .mock-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .mock-window { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .mock-titlebar { background: #0f172a; padding: 10px 16px; display: flex; align-items: center; gap: 8px; }
+  .mock-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .mock-dot.r { background: #ef4444; } .mock-dot.y { background: #eab308; } .mock-dot.g { background: #22c55e; }
+  .mock-titlebar span { color: var(--text-muted); font-size: 12px; margin-left: 12px; }
+  .mock-body { padding: 20px; }
+  .mock-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
+  .mock-input { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text-muted); font-size: 13px; width: 100%; margin-bottom: 12px; }
+
+  /* Score Ring */
+  .score-ring-container { text-align: center; margin: 20px 0; }
+  .score-ring { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--accent) 0deg 274deg, var(--border) 274deg 360deg); display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; }
+  .score-ring-inner { width: 96px; height: 96px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  .score-ring-inner .score { font-size: 32px; font-weight: 800; color: var(--accent-light); }
+  .score-ring-inner .label { font-size: 10px; color: var(--text-muted); }
+
+  /* Dimension bars */
+  .dim-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .dim-label { font-size: 12px; color: var(--text-muted); width: 90px; text-align: right; }
+  .dim-bar { flex: 1; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+  .dim-fill { height: 100%; border-radius: 4px; }
+  .dim-score { font-size: 12px; color: var(--text-muted); width: 30px; }
+
+  .mock-btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .mock-btn { padding: 6px 14px; border-radius: 8px; font-size: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); }
+  .mock-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .mock-generate { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; width: 100%; margin-top: 8px; }
+
+  .store-section { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-top: 20px; }
+  .store-section h3 { font-size: 20px; margin-bottom: 16px; color: var(--accent-light); }
+  .store-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
+  .store-block h4 { font-size: 14px; color: var(--accent-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .store-block p, .store-block li { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
+  .store-block ul { list-style: none; padding: 0; }
+  .store-block ul li::before { content: '✓ '; color: var(--accent-light); font-weight: bold; }
+  .copy-hint { position: absolute; top: 12px; right: 12px; font-size: 11px; color: var(--text-muted); background: var(--card); padding: 2px 8px; border-radius: 4px; }
+  .release-item { border-left: 3px solid var(--accent); padding: 16px 20px; margin-bottom: 16px; background: var(--card); border-radius: 0 8px 8px 0; }
+  .release-item .version { font-size: 14px; font-weight: 700; color: var(--accent-light); }
+  .release-item .date { font-size: 12px; color: var(--text-muted); margin-left: 8px; }
+  .release-item ul { margin-top: 8px; padding-left: 16px; }
+  .release-item li { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+  .divider { height: 1px; background: var(--border); margin: 0; }
+  @media (max-width: 768px) { .hero h1 { font-size: 36px; } .mock-section { grid-template-columns: 1fr; } .flow-steps { flex-direction: column; align-items: center; } .flow-arrow { transform: rotate(90deg); } }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-icon">&#128200;</div>
+    <h1>Engagix</h1>
+    <div class="subtitle">LinkedIn Post Optimizer</div>
+    <p class="tagline">Optimize LinkedIn posts for maximum engagement. AI scoring, A/B testing, hook rewriting, and viral prediction. Your LinkedIn growth engine.</p>
+    <div class="badge-row">
+      <div class="badge"><strong>0-100</strong> Score</div>
+      <div class="badge"><strong>5</strong> Dimensions</div>
+      <div class="badge"><strong>3</strong> A/B Variants</div>
+      <div class="badge"><strong>5</strong> Hook Styles</div>
+      <div class="badge"><strong>1-10</strong> Viral Score</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Powerful Features</h2>
+    <p class="section-desc">Data-driven optimization tools to maximize your LinkedIn engagement</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">&#127919;</div>
+        <h3>Engagement Scorer (0-100)</h3>
+        <p>Get a comprehensive engagement score across 5 dimensions: Hook Strength, Readability, Call-to-Action, Emotional Impact, and Format Quality.</p>
+        <span class="tag">5 Dimensions</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#128295;</div>
+        <h3>Post Optimizer</h3>
+        <p>AI rewrites your post for higher engagement with a detailed list of changes and why each one matters.</p>
+        <span class="tag">Smart Rewrite</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#128257;</div>
+        <h3>A/B Variants</h3>
+        <p>Generate 3 different versions of your post with unique angles. Compare side-by-side to pick the winner.</p>
+        <span class="tag">3 Versions</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#127907;</div>
+        <h3>Hook Rewriter</h3>
+        <p>5 hook styles: Question, Bold Statement, Story, Statistic, and Contrarian. Transform weak openings into scroll-stoppers.</p>
+        <span class="tag">5 Styles</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#128293;</div>
+        <h3>Viral Predictor</h3>
+        <p>Score your post 1-10 on viral potential with factor analysis showing what drives shareability.</p>
+        <span class="tag">Predictive AI</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#128187;</div>
+        <h3>LinkedIn Integration</h3>
+        <p>Button injection directly on LinkedIn. Score ring UI shows engagement potential without leaving the feed. Export as MD, TXT, or PDF.</p>
+        <span class="tag">Native UX</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-desc">Optimize any LinkedIn post in 6 steps</p>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="flow-step-content"><div class="flow-num">1</div><h4>Paste Post</h4><p>Enter your draft post</p></div></div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step"><div class="flow-step-content"><div class="flow-num">2</div><h4>Score</h4><p>Get engagement score</p></div></div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step"><div class="flow-step-content"><div class="flow-num">3</div><h4>Breakdown</h4><p>See 5 dimensions</p></div></div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step"><div class="flow-step-content"><div class="flow-num">4</div><h4>Optimize</h4><p>AI rewrites for impact</p></div></div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step"><div class="flow-step-content"><div class="flow-num">5</div><h4>A/B Compare</h4><p>Compare 3 variants</p></div></div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step"><div class="flow-step-content"><div class="flow-num">6</div><h4>Predict</h4><p>Viral score 1-10</p></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">See It in Action</h2>
+    <p class="section-desc">Score ring UI and dimension breakdown</p>
+    <div class="mock-section">
+      <div>
+        <p class="mock-label">SCORE DASHBOARD</p>
+        <div class="mock-window">
+          <div class="mock-titlebar">
+            <div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div>
+            <span>Engagix - Score</span>
+          </div>
+          <div class="mock-body">
+            <div class="score-ring-container">
+              <div class="score-ring"><div class="score-ring-inner"><div class="score">76</div><div class="label">/ 100</div></div></div>
+            </div>
+            <div style="margin-top:20px">
+              <div class="dim-row"><span class="dim-label">Hook</span><div class="dim-bar"><div class="dim-fill" style="width:85%;background:var(--accent)"></div></div><span class="dim-score">17</span></div>
+              <div class="dim-row"><span class="dim-label">Readability</span><div class="dim-bar"><div class="dim-fill" style="width:70%;background:var(--accent-light)"></div></div><span class="dim-score">14</span></div>
+              <div class="dim-row"><span class="dim-label">CTA</span><div class="dim-bar"><div class="dim-fill" style="width:60%;background:#fbbf24"></div></div><span class="dim-score">12</span></div>
+              <div class="dim-row"><span class="dim-label">Emotion</span><div class="dim-bar"><div class="dim-fill" style="width:90%;background:var(--accent)"></div></div><span class="dim-score">18</span></div>
+              <div class="dim-row"><span class="dim-label">Format</span><div class="dim-bar"><div class="dim-fill" style="width:75%;background:var(--accent-light)"></div></div><span class="dim-score">15</span></div>
+            </div>
+            <button class="mock-generate" style="margin-top:16px">&#128295; Optimize Post</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="mock-label">A/B VARIANTS</p>
+        <div class="mock-window">
+          <div class="mock-titlebar">
+            <div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div>
+            <span>Engagix - A/B Testing</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-btn-row">
+              <div class="mock-btn active">Variant A</div>
+              <div class="mock-btn">Variant B</div>
+              <div class="mock-btn">Variant C</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
+              <div style="font-size:13px;color:var(--text);margin-bottom:8px"><strong>Bold Angle</strong></div>
+              <p style="font-size:12px;color:var(--text-muted)">"Stop writing LinkedIn posts the way everyone else does. Here's what actually works in 2026..."</p>
+              <div style="display:flex;gap:12px;margin-top:8px">
+                <span style="font-size:11px;color:var(--accent-light)">Score: 82</span>
+                <span style="font-size:11px;color:#22c55e">Viral: 7/10</span>
+              </div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
+              <div style="font-size:13px;color:var(--text);margin-bottom:8px"><strong>Story Angle</strong></div>
+              <p style="font-size:12px;color:var(--text-muted)">"Last week, I changed one word in my LinkedIn post. The result? 10x more engagement..."</p>
+              <div style="display:flex;gap:12px;margin-top:8px">
+                <span style="font-size:11px;color:var(--accent-light)">Score: 79</span>
+                <span style="font-size:11px;color:#22c55e">Viral: 6/10</span>
+              </div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+              <div style="font-size:13px;color:var(--text);margin-bottom:8px"><strong>Data Angle</strong></div>
+              <p style="font-size:12px;color:var(--text-muted)">"I analyzed 500 top LinkedIn posts. The #1 pattern? It's not what you think..."</p>
+              <div style="display:flex;gap:12px;margin-top:8px">
+                <span style="font-size:11px;color:var(--accent-light)">Score: 85</span>
+                <span style="font-size:11px;color:#22c55e">Viral: 8/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">What's New</h2>
+    <p class="section-desc">Latest updates and improvements</p>
+    <div class="release-item">
+      <span class="version">v1.0.0</span><span class="date">March 2026</span>
+      <ul>
+        <li>Initial release with 5-dimension engagement scoring (0-100)</li>
+        <li>AI-powered post optimizer with detailed change explanations</li>
+        <li>A/B variant generator producing 3 unique versions</li>
+        <li>Hook rewriter with 5 styles (Question, Bold, Story, Stat, Contrarian)</li>
+        <li>Viral predictor scoring 1-10 with factor analysis</li>
+        <li>LinkedIn button injection and score ring UI</li>
+        <li>Export support for Markdown, TXT, and PDF</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="container">
+    <div class="store-section">
+      <h3>&#127983; Chrome Web Store Listing (Copy-Paste Ready)</h3>
+      <div class="store-block">
+        <span class="copy-hint">&#128203; Copy</span>
+        <h4>Short Description (132 chars)</h4>
+        <p>Optimize LinkedIn posts for maximum engagement. AI scoring, A/B testing, hook rewriting, and viral prediction. Your LinkedIn growth engine.</p>
+      </div>
+      <div class="store-block">
+        <span class="copy-hint">&#128203; Copy</span>
+        <h4>Detailed Description</h4>
+        <p>Engagix is your AI-powered LinkedIn post optimizer. Paste any post and instantly get a comprehensive engagement score across 5 key dimensions: Hook Strength, Readability, Call-to-Action, Emotional Impact, and Format Quality.</p>
+        <br>
+        <p><strong>Engagement Scorer:</strong> Get a 0-100 score with a beautiful ring UI showing exactly where your post excels and where it needs work.</p>
+        <br>
+        <p><strong>Post Optimizer:</strong> AI rewrites your post for higher engagement, with a detailed list of every change and the reasoning behind it.</p>
+        <br>
+        <p><strong>A/B Variants:</strong> Generate 3 different versions of your post with unique angles — bold, story-driven, data-backed — and compare scores side by side.</p>
+        <br>
+        <p><strong>Hook Rewriter:</strong> Transform weak opening lines using 5 proven hook styles: Question, Bold Statement, Story, Statistic, and Contrarian.</p>
+        <br>
+        <p><strong>Viral Predictor:</strong> Get a 1-10 viral potential score with detailed factor analysis showing what drives (or kills) shareability.</p>
+        <br>
+        <p><strong>LinkedIn Integration:</strong> Works directly on LinkedIn with injected buttons. See your score ring without leaving the feed. Export as Markdown, TXT, or PDF.</p>
+      </div>
+      <div class="store-block">
+        <span class="copy-hint">&#128203; Copy</span>
+        <h4>Feature Bullet Points</h4>
+        <ul>
+          <li>Engagement scorer (0-100) with 5-dimension breakdown</li>
+          <li>AI post optimizer with detailed change explanations</li>
+          <li>A/B variant generator with 3 unique post versions</li>
+          <li>Hook rewriter with 5 styles: Question, Bold, Story, Stat, Contrarian</li>
+          <li>Viral predictor (1-10) with factor analysis</li>
+          <li>LinkedIn button injection for in-feed optimization</li>
+          <li>Beautiful score ring UI visualization</li>
+          <li>Export to Markdown, TXT, and PDF formats</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center; padding: 40px; color: var(--text-muted); font-size: 13px;">
+  Engagix &mdash; LinkedIn Post Optimizer &mdash; Chrome Extension
+</div>
+
+</body>
+</html>
