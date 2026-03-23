@@ -1,33 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ea580c"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#9a3412"/>
     </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.2)"/>
-      <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+    <linearGradient id="bg-overlay" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#fb923c" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#9a3412" stop-opacity="0"/>
     </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+    <filter id="flame-glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
+
   <!-- Background -->
   <rect width="128" height="128" rx="28" fill="url(#bg)"/>
-  <!-- Shine overlay -->
-  <rect width="128" height="128" rx="28" fill="url(#shine)"/>
-  <!-- Upward trending chart -->
-  <g fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Chart baseline / axes -->
-    <line x1="28" y1="98" x2="28" y2="38"/>
-    <line x1="28" y1="98" x2="100" y2="98"/>
-    <!-- Trend line going up -->
-    <polyline points="34,88 50,78 62,70 74,52 88,36" stroke-width="4.5"/>
-    <!-- Chart bars -->
-    <rect x="36" y="78" width="10" height="20" rx="2" fill="white" opacity="0.4" stroke="none"/>
-    <rect x="52" y="68" width="10" height="30" rx="2" fill="white" opacity="0.5" stroke="none"/>
-    <rect x="68" y="56" width="10" height="42" rx="2" fill="white" opacity="0.6" stroke="none"/>
-    <rect x="84" y="42" width="10" height="56" rx="2" fill="white" opacity="0.7" stroke="none"/>
+  <rect width="128" height="128" rx="28" fill="url(#bg-overlay)"/>
+
+  <!-- Bar chart columns forming phoenix wings -->
+  <g filter="url(#shadow)">
+    <rect x="22" y="82" width="9" height="22" rx="2.5" fill="#ffffff" opacity="0.55"/>
+    <rect x="34" y="68" width="9" height="36" rx="2.5" fill="#ffffff" opacity="0.7"/>
+    <rect x="46" y="52" width="10" height="52" rx="3" fill="#ffffff" opacity="0.85"/>
+    <rect x="59" y="38" width="10" height="66" rx="3" fill="#ffffff" opacity="0.95"/>
+    <rect x="72" y="52" width="10" height="52" rx="3" fill="#ffffff" opacity="0.85"/>
+    <rect x="85" y="68" width="9" height="36" rx="2.5" fill="#ffffff" opacity="0.7"/>
+    <rect x="97" y="82" width="9" height="22" rx="2.5" fill="#ffffff" opacity="0.55"/>
   </g>
-  <!-- Lightning bolt -->
-  <g fill="white" transform="translate(80, 18)">
-    <polygon points="14,0 4,16 12,16 6,30 24,12 16,12 22,0"/>
+
+  <!-- Phoenix head and flame rising from center bar -->
+  <g filter="url(#flame-glow)">
+    <path d="M64 38 Q60 30 62 22 Q64 16 64 12 Q64 16 66 22 Q68 30 64 38" fill="#ffffff" opacity="0.9"/>
+    <path d="M62 28 Q56 22 54 16 Q58 20 62 28" fill="#ffffff" opacity="0.6"/>
+    <path d="M66 28 Q72 22 74 16 Q70 20 66 28" fill="#ffffff" opacity="0.6"/>
+    <circle cx="64" cy="24" r="2" fill="#ea580c" opacity="0.7"/>
+    <path d="M64 36 Q62 28 63 20 Q64 26 65 20 Q66 28 64 36" fill="#ffffff" opacity="0.5"/>
   </g>
+
+  <!-- Flame wisps at wing tips -->
+  <g opacity="0.5" filter="url(#soft)">
+    <path d="M26 82 Q23 76 25 72 Q27 76 26 82" fill="#ffffff"/>
+    <path d="M24 80 Q20 75 22 70 Q24 74 24 80" fill="#ffffff" opacity="0.4"/>
+    <path d="M102 82 Q105 76 103 72 Q101 76 102 82" fill="#ffffff"/>
+    <path d="M104 80 Q108 75 106 70 Q104 74 104 80" fill="#ffffff" opacity="0.4"/>
+  </g>
+
+  <!-- Upward arrow integrated into center -->
+  <path d="M58 44 L64 36 L70 44" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Lightning bolt accent -->
+  <g filter="url(#soft)">
+    <path d="M84 28 L80 36 L84 34 L80 44" stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Small rising particles -->
+  <circle cx="50" cy="42" r="1.2" fill="#ffffff" opacity="0.4"/>
+  <circle cx="78" cy="40" r="1" fill="#ffffff" opacity="0.35"/>
+  <circle cx="44" cy="48" r="0.8" fill="#ffffff" opacity="0.3"/>
+  <circle cx="86" cy="46" r="0.9" fill="#ffffff" opacity="0.3"/>
 </svg>
